@@ -19,7 +19,7 @@ declare module 'axios' {
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
-  timeout: 15000, // 15 seconds seems reasonable
+  timeout: 15000, 
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -29,12 +29,11 @@ apiClient.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  // track when request started (for perf monitoring)
   config._startTime = Date.now();
   return config;
 });
 
-// log all responses + errors
+// log all responses and errors
 apiClient.interceptors.response.use(
   (response) => {
     const duration = response.config._startTime ? Date.now() - response.config._startTime : 0;
@@ -50,7 +49,6 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     const duration = error.config?._startTime ? Date.now() - error.config._startTime : 0;
 
-    // normalize error format - backend sometimes returns different structures
     const apiError: ApiError = {
       message:
         (error.response?.data as any)?.message || error.message || 'An unexpected error occurred',

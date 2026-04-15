@@ -26,7 +26,7 @@ window.onunhandledrejection = (event: PromiseRejectionEvent) => {
 };
 
 async function bootstrap() {
-  // MSW for API mocking in dev mode - makes frontend dev so much easier
+  // MSW for API mocking in dev mode
   if (import.meta.env.DEV) {
     const { worker } = await import('@api/mocks/browser');
     await worker.start({ onUnhandledRequest: 'bypass' });

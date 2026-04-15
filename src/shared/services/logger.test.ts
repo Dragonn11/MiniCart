@@ -3,7 +3,6 @@ import { logger } from './logger';
 
 describe('logger', () => {
   beforeEach(() => {
-    // clear console mocks before each test
     vi.clearAllMocks();
   });
 

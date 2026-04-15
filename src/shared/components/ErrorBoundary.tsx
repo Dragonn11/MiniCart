@@ -11,7 +11,7 @@ interface State {
   error?: Error;
 }
 
-// error boundary to catch React errors and prevent white screen of death
+// error boundary to catch React errors
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -23,7 +23,6 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // log errors so we can debug them later
     logger.error('Unhandled React error', {
       error: error.message,
       stack: error.stack ?? '',

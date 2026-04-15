@@ -12,20 +12,20 @@ export function useCart() {
   return useQuery({
     queryKey: cartKeys.all,
     queryFn: cartApi.get,
-    staleTime: 0, // never consider cart data stale
-    gcTime: 0, // don't keep in cache when unmounted
-    refetchOnMount: 'always', // always get latest cart state
+    staleTime: 0, 
+    gcTime: 0, 
+    refetchOnMount: 'always', 
   });
 }
 
-// optimistic updates make the UI feel super snappy!
+// optimistic updates
 export function useAddToCart() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: cartApi.addItem,
     onMutate: async (newItem: CartItem) => {
-      // cancel any outgoing refetches so they don't overwrite our optimistic update
+      // cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: cartKeys.all });
       const previous = queryClient.getQueryData<CartItem[]>(cartKeys.all);
 
@@ -33,7 +33,7 @@ export function useAddToCart() {
       queryClient.setQueryData<CartItem[]>(cartKeys.all, (old = []) => {
         const existing = old.find((i) => i.productId === newItem.productId);
         if (existing) {
-          // item already in cart, just bump the quantity
+          // item already in cart increase the quantity
           return old.map((i) =>
             i.productId === newItem.productId
               ? { ...i, quantity: i.quantity + newItem.quantity }
@@ -47,7 +47,7 @@ export function useAddToCart() {
     },
     onError: (_err, _item, context) => {
       logger.warn('Add to cart failed, rolling back optimistic update');
-      // oops something went wrong, rollback to previous state
+      // rollback to previous state
       if (context?.previous) {
         queryClient.setQueryData(cartKeys.all, context.previous);
       }

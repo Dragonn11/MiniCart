@@ -12,7 +12,7 @@ export function useOrders(page: number) {
   return useQuery({
     queryKey: orderKeys.list(page),
     queryFn: () => ordersApi.getAll(page),
-    staleTime: 30 * 1000, // orders can cache for 30 seconds
+    staleTime: 30 * 1000, 
     gcTime: 5 * 60 * 1000,
     placeholderData: (prev) => prev,
   });
@@ -25,9 +25,7 @@ export function usePlaceOrder() {
     mutationFn: ordersApi.place,
     onSuccess: () => {
       logger.info('Order placed successfully, invalidating order and cart caches');
-      // invalidate orders so the new order shows up
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
-      // also clear cart since server empties it on order placement
       queryClient.invalidateQueries({ queryKey: cartKeys.all });
     },
     onError: () => {
@@ -36,7 +34,7 @@ export function usePlaceOrder() {
   });
 }
 
-// for the refresh button on orders page
+// for the refresh button order page
 export function useInvalidateOrders() {
   const queryClient = useQueryClient();
   return () => {

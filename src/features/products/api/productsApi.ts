@@ -1,7 +1,7 @@
 import apiClient from '@api/client';
 import type { Product, PaginatedResponse, ProductFilters } from '@api/types';
 
-//A API abstraction layer for making HTTP calls
+// making HTTP calls
 export const productsApi = {
   getAll: async (filters?: ProductFilters): Promise<PaginatedResponse<Product>> => {
     const params = new URLSearchParams();
