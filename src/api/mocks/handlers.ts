@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from 'msw';
 import { mockProducts, mockCart, mockOrders, setMockCart, addMockOrder } from './data';
-import type { CartItem, ProductFilters } from '@api/types';
+import type { CartItem } from '@api/types';
 
 const BASE = '/api';
 

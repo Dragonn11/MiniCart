@@ -1,6 +1,6 @@
 // Axios wrapper with auth & logging
 // TODO: maybe add retry logic later?
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { logger } from '@shared/services/logger';
 
 export interface ApiError {
