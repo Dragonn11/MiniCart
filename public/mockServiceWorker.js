@@ -3,8 +3,7 @@
 
 /**
  * Mock Service Worker.
- * @see https://github.com/mswjs/msw
- * - Please do NOT modify this file.
+ * - no modifications allowed here
  */
 
 const PACKAGE_VERSION = '2.13.3'
