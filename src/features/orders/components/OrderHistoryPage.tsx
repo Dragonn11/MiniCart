@@ -102,7 +102,7 @@ export default function OrderHistoryPage() {
                     <span>
                       {item.name} × {item.quantity}
                     </span>
-                    <span>${(item.price * item.quantity).toFixed(2)}</span>
+                    <span>₹{Math.round(item.price * item.quantity)}</span>
                   </div>
                 ))}
               </div>
@@ -117,7 +117,7 @@ export default function OrderHistoryPage() {
                   fontSize: '1.1rem',
                 }}
               >
-                Total: ${order.total.toFixed(2)}
+                Total: ₹{Math.round(order.total)}
               </div>
             </div>
           ))}

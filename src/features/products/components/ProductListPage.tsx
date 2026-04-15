@@ -144,9 +144,8 @@ export default function ProductListPage() {
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
                   <span style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#1a73e8' }}>
-                    ${product.price.toFixed(2)}
+                    ₹{Math.round(product.price)}
                   </span>
-                  <span style={{ color: '#f5a623' }}>★ {product.rating}</span>
                 </div>
               </div>
             </Link>

@@ -54,7 +54,7 @@ export default function CartPage() {
                 <div style={{ flex: 1 }}>
                   <h3 style={{ margin: '0 0 0.25rem' }}>{item.name}</h3>
                   <p style={{ margin: 0, color: '#1a73e8', fontWeight: 'bold' }}>
-                    ${item.price.toFixed(2)}
+                    ₹{Math.round(item.price)}
                   </p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -99,7 +99,7 @@ export default function CartPage() {
                   </button>
                 </div>
                 <span style={{ fontWeight: 'bold', minWidth: 80, textAlign: 'right' }}>
-                  ${(item.price * item.quantity).toFixed(2)}
+                  ₹{Math.round(item.price * item.quantity)}
                 </span>
                 <button
                   onClick={() => removeItem.mutate(item.productId)}
@@ -130,7 +130,7 @@ export default function CartPage() {
           >
             <div>
               <p style={{ margin: 0, fontSize: '1.3rem', fontWeight: 'bold' }}>
-                Total: ${total.toFixed(2)}
+                Total: ₹{Math.round(total)}
               </p>
               <p style={{ margin: '0.25rem 0 0', color: '#666', fontSize: '0.85rem' }}>
                 {cartItems.length} item(s)

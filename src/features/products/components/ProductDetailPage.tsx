@@ -69,7 +69,6 @@ export default function ProductDetailPage() {
           </span>
           <h1 style={{ margin: '0.75rem 0 0.5rem' }}>{product.name}</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <span style={{ color: '#f5a623', fontSize: '1.2rem' }}>★ {product.rating}</span>
             <span style={{ color: product.stock > 0 ? '#34a853' : '#ea4335' }}>
               {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
             </span>
@@ -78,7 +77,7 @@ export default function ProductDetailPage() {
           <div
             style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1a73e8', margin: '1.5rem 0' }}
           >
-            ${product.price.toFixed(2)}
+            ₹{Math.round(product.price)}
           </div>
           <button
             onClick={handleAddToCart}
