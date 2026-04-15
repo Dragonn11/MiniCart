@@ -1,30 +1,176 @@
-name: CI
+name: CI Pipeline
 
 on:
-  pull_request:
-    branches: [main]
   push:
-    branches: [main]
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
 
 jobs:
-  lint-and-test:
+  # Job 1: Code Quality Checks
+  quality:
+    name: Code Quality
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Type check
+      - name: Run TypeScript type checking
         run: npx tsc --noEmit
 
-      - name: Test
+      - name: Run ESLint
+        run: npm run lint
+        # Linting must pass on PRs - fails build if there are errors
+
+      - name: Check code formatting
+        run: npx prettier --check "src/**/*.{ts,tsx}"
+        # Formatting must be correct on PRs - fails build if not formatted
+
+  # Job 2: Build
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: quality
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Check build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "Build failed - dist directory not found"
+            exit 1
+          fi
+          echo "Build successful - dist size:"
+          du -sh dist
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  # Job 3: Test (placeholder for future unit tests)
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: quality
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
         run: npm test
+        # Tests run with vitest - currently using placeholder tests
+        # Add actual tests in src/**/*.test.ts or src/**/*.test.tsx
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            coverage/
+            test-results/
+          retention-days: 7
+
+  # Job 4: Security Audit
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true # don't fail on low-severity issues
+
+      - name: Check for known vulnerabilities
+        run: |
+          npm audit --json > audit-results.json || true
+          cat audit-results.json
+
+  # Job 5: Bundle Analysis
+  analyze:
+    name: Bundle Size Analysis
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and analyze bundle
+        run: |
+          npm run build
+          echo "Bundle size analysis:"
+          du -sh dist/assets/*
+          
+      - name: Comment bundle size on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+            const bundleSize = execSync('du -sh dist/assets').toString();
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📦 Bundle Size\n\`\`\`\n${bundleSize}\n\`\`\``
+            });
