@@ -33,14 +33,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render(): ReactNode {
     if (this.state.hasError) {
-      return this.props.fallback ?? (
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h2>Something went wrong</h2>
-          <p>{this.state.error?.message}</p>
-          <button onClick={() => this.setState({ hasError: false })}>
-            Try Again
-          </button>
-        </div>
+      return (
+        this.props.fallback ?? (
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h2>Something went wrong</h2>
+            <p>{this.state.error?.message}</p>
+            <button onClick={() => this.setState({ hasError: false })}>Try Again</button>
+          </div>
+        )
       );
     }
     return this.props.children;

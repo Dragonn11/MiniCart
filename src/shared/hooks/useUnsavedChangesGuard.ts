@@ -3,8 +3,10 @@ import { useBeforeUnload, useBlocker } from 'react-router-dom';
 
 // hook to prevent users from accidentally losing unsaved changes
 // handles both browser navigation (close tab, refresh) and react-router navigation
-export function useUnsavedChangesGuard(isDirty: boolean, message = 'You have unsaved changes. Are you sure you want to leave?') {
-
+export function useUnsavedChangesGuard(
+  isDirty: boolean,
+  message = 'You have unsaved changes. Are you sure you want to leave?'
+) {
   // browser-level navigation guard
   useBeforeUnload(
     useCallback(
@@ -19,9 +21,7 @@ export function useUnsavedChangesGuard(isDirty: boolean, message = 'You have uns
   );
 
   // react router navigation guard
-  const blocker = useBlocker(
-    useCallback(() => isDirty, [isDirty])
-  );
+  const blocker = useBlocker(useCallback(() => isDirty, [isDirty]));
 
   useEffect(() => {
     if (blocker.state === 'blocked') {

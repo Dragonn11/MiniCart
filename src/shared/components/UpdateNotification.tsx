@@ -15,14 +15,35 @@ export function UpdateNotification() {
   if (!needRefresh) return null;
 
   return (
-    <div style={{
-      position: 'fixed', bottom: '1rem', right: '1rem', background: '#1a73e8',
-      color: '#fff', padding: '1rem 1.5rem', borderRadius: 8, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-      display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 9999,
-    }}>
+    <div
+      style={{
+        position: 'fixed',
+        bottom: '1rem',
+        right: '1rem',
+        background: '#1a73e8',
+        color: '#fff',
+        padding: '1rem 1.5rem',
+        borderRadius: 8,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        zIndex: 9999,
+      }}
+    >
       <span>A new version is available!</span>
-      <button onClick={() => updateServiceWorker(true)}
-        style={{ background: '#fff', color: '#1a73e8', border: 'none', padding: '0.5rem 1rem', borderRadius: 4, cursor: 'pointer', fontWeight: 'bold' }}>
+      <button
+        onClick={() => updateServiceWorker(true)}
+        style={{
+          background: '#fff',
+          color: '#1a73e8',
+          border: 'none',
+          padding: '0.5rem 1rem',
+          borderRadius: 4,
+          cursor: 'pointer',
+          fontWeight: 'bold',
+        }}
+      >
         Reload
       </button>
     </div>

@@ -18,7 +18,10 @@ export const handlers = [
 
     let filtered = [...mockProducts];
     // filter by search term (name or description)
-    if (search) filtered = filtered.filter((p) => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search));
+    if (search)
+      filtered = filtered.filter(
+        (p) => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search)
+      );
     if (category) filtered = filtered.filter((p) => p.category === category);
 
     // sorting logic - handles both strings and numbers
@@ -26,8 +29,10 @@ export const handlers = [
       const key = sortBy as keyof typeof a;
       const valA = a[key];
       const valB = b[key];
-      if (typeof valA === 'string' && typeof valB === 'string') return sortOrder === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
-      if (typeof valA === 'number' && typeof valB === 'number') return sortOrder === 'asc' ? valA - valB : valB - valA;
+      if (typeof valA === 'string' && typeof valB === 'string')
+        return sortOrder === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      if (typeof valA === 'number' && typeof valB === 'number')
+        return sortOrder === 'asc' ? valA - valB : valB - valA;
       return 0;
     });
 
@@ -39,7 +44,7 @@ export const handlers = [
       data: paged,
       page,
       totalPages: Math.ceil(filtered.length / limit),
-      totalItems: filtered.length
+      totalItems: filtered.length,
     });
   }),
 
@@ -47,7 +52,11 @@ export const handlers = [
   http.get(`${BASE}/products/:id`, async ({ params }) => {
     await delay(200);
     const product = mockProducts.find((p) => p.id === params.id);
-    if (!product) return HttpResponse.json({ message: 'Product not found', code: 'NOT_FOUND' }, { status: 404 });
+    if (!product)
+      return HttpResponse.json(
+        { message: 'Product not found', code: 'NOT_FOUND' },
+        { status: 404 }
+      );
     return HttpResponse.json(product);
   }),
 
@@ -76,7 +85,8 @@ export const handlers = [
     await delay(200);
     const body = (await request.json()) as { quantity: number };
     const item = mockCart.find((i) => i.productId === params.productId);
-    if (!item) return HttpResponse.json({ message: 'Item not found', code: 'NOT_FOUND' }, { status: 404 });
+    if (!item)
+      return HttpResponse.json({ message: 'Item not found', code: 'NOT_FOUND' }, { status: 404 });
     item.quantity = body.quantity;
     setMockCart([...mockCart]);
     return HttpResponse.json(mockCart);

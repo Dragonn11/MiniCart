@@ -14,7 +14,10 @@ export interface LogProvider {
 class ConsoleLogProvider implements LogProvider {
   log(entry: LogEntry): void {
     const method = entry.level === 'debug' ? 'log' : entry.level;
-    console[method](`[${entry.timestamp}] [${entry.level.toUpperCase()}] ${entry.message}`, entry.data ?? '');
+    console[method](
+      `[${entry.timestamp}] [${entry.level.toUpperCase()}] ${entry.message}`,
+      entry.data ?? ''
+    );
   }
 }
 

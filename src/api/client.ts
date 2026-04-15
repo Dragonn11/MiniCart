@@ -37,9 +37,7 @@ apiClient.interceptors.request.use((config) => {
 // log all responses + errors
 apiClient.interceptors.response.use(
   (response) => {
-    const duration = response.config._startTime
-      ? Date.now() - response.config._startTime
-      : 0;
+    const duration = response.config._startTime ? Date.now() - response.config._startTime : 0;
 
     logger.info('API call completed', {
       method: response.config.method?.toUpperCase(),
@@ -50,21 +48,14 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    const duration = error.config?._startTime
-      ? Date.now() - error.config._startTime
-      : 0;
+    const duration = error.config?._startTime ? Date.now() - error.config._startTime : 0;
 
     // normalize error format - backend sometimes returns different structures
     const apiError: ApiError = {
       message:
-        (error.response?.data as any)?.message ||
-        error.message ||
-        'An unexpected error occurred',
+        (error.response?.data as any)?.message || error.message || 'An unexpected error occurred',
       status: error.response?.status || 0,
-      code:
-        (error.response?.data as any)?.code ||
-        error.code ||
-        'UNKNOWN_ERROR',
+      code: (error.response?.data as any)?.code || error.code || 'UNKNOWN_ERROR',
       details: (error.response?.data as any)?.details,
     };
 
