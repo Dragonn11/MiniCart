@@ -26,7 +26,7 @@ export function useUnsavedChangesGuard(
     if (blocker.state === 'blocked') {
       const proceed = window.confirm(message);
       if (proceed) {
-        blocker.proceed(); 
+        blocker.proceed();
       } else {
         blocker.reset();
       }

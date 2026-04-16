@@ -12,9 +12,9 @@ export function useCart() {
   return useQuery({
     queryKey: cartKeys.all,
     queryFn: cartApi.get,
-    staleTime: 0, 
-    gcTime: 0, 
-    refetchOnMount: 'always', 
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: 'always',
   });
 }
 

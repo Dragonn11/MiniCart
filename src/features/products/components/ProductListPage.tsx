@@ -10,7 +10,7 @@ export default function ProductListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search') || '';
   const category = searchParams.get('category') || '';
-  const sortBy = (searchParams.get('sortBy') as 'price' | 'rating' | 'name') || 'name';
+  const sortBy = (searchParams.get('sortBy') as 'price' | 'name') || 'name';
   const page = parseInt(searchParams.get('page') || '1', 10);
 
   // memoize filters to avoid unnecessary refetches
@@ -94,7 +94,6 @@ export default function ProductListPage() {
         >
           <option value="name">Sort by Name</option>
           <option value="price">Sort by Price</option>
-          <option value="rating">Sort by Rating</option>
         </select>
       </div>
 

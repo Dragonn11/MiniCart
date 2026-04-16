@@ -12,7 +12,7 @@ export function useOrders(page: number) {
   return useQuery({
     queryKey: orderKeys.list(page),
     queryFn: () => ordersApi.getAll(page),
-    staleTime: 30 * 1000, 
+    staleTime: 30 * 1000,
     gcTime: 5 * 60 * 1000,
     placeholderData: (prev) => prev,
   });
