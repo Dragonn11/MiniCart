@@ -1,6 +1,6 @@
 # MiniCart
 
-A small ecommerce cart app I built to learn React Query and play around with optimistic updates.
+A small ecommerce cart app I built around with optimistic updates.
 
 ## start
 
@@ -19,7 +19,7 @@ npm run build
 
 ## what I have used
 
---React 18 + TypeScript (strict mode, because why not)
+--React 18 + TypeScript (strict mode)
 --Vite for builds — it's fast and I didn't want to deal with webpack configs
 -- React Router 6 with lazy loading for each page
 -- TanStack Query handles all the server state, caching, refetching etc
